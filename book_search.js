@@ -26,9 +26,18 @@
         "SearchTerm": "",
         "Results": []
     };
-    
-    console.log(scannedTextObj)
-    console.log(searchTerm)
+    result.SearchTerm = searchTerm
+    scannedTextObj.forEach(book => {
+        book.Content.forEach(scannedObj =>{
+            if(scannedObj.Text.includes(searchTerm)){
+                result.Results.push({
+                    "ISBN": book.ISBN,
+                    "Page": scannedObj.Page,
+                    "Line": scannedObj.Line
+                })
+            }  
+        })
+    });
     return result; 
 }
 
