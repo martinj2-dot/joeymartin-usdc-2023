@@ -27,6 +27,8 @@
         "Results": []
     };
     
+    console.log(scannedTextObj)
+    console.log(searchTerm)
     return result; 
 }
 
