@@ -160,7 +160,7 @@ if (test2result.Results.length == 1) {
 
 
 /**Positive test cases*/
-
+/**Checking to see if the desired output matches with the output from the function */
 const positive_test_result_1 = findSearchTermInBooks("eyes were", twentyLeaguesIn);
 if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_result_1)) {
     console.log("PASS: Positive Test 1");
@@ -171,6 +171,8 @@ if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_resul
 }
 
 /**Testing multiple positive results */
+
+/**checking to see if the find search term returns multiple records in the correct order. */
 const multiple_positive_results = findSearchTermInBooks("and", twentyLeaguesIn); 
 if (multiple_positive_results.Results.length == 2) {
     console.log("PASS: Positive Test 2");
@@ -237,3 +239,6 @@ if (case_sensitive_test_result1.Results.length == 0) {
     console.log("Expected:", 0);
     console.log("Received:", case_sensitive_test_result1.Results.length);
 }
+
+
+/** */
