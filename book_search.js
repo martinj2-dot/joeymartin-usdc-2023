@@ -110,6 +110,17 @@ const negative_test_output = {
     "Results": []
 }
 
+const case_sensitive_test_output = {
+    "SearchTerm": "Canadian",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 9
+        },
+    ]
+}
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -205,4 +216,24 @@ if (JSON.stringify(negative_test_output) === JSON.stringify(negative_test_result
     console.log("FAIL: Negative Test 3");
     console.log("Expected:", negative_test_output);
     console.log("Received:", negative_test_result3);
+}
+
+/**Case Sensitive Test cases*/
+
+const case_sensitive_test_result = findSearchTermInBooks("Canadian", twentyLeaguesIn); 
+if (JSON.stringify(case_sensitive_test_output) === JSON.stringify(case_sensitive_test_result)) {
+    console.log("PASS: Case-sensitive Test 1");
+} else {
+    console.log("FAIL: Case-sensitive Test 1");
+    console.log("Expected:", case_sensitive_test_output);
+    console.log("Received:", case_sensitive_test_result);
+}
+
+const case_sensitive_test_result1 = findSearchTermInBooks("canadian", twentyLeaguesIn);
+if (case_sensitive_test_result1.Results.length == 0) {
+    console.log("PASS: Case-sensitive Test 2");
+} else {
+    console.log("FAIL: Case-sensitive Test 2");
+    console.log("Expected:", 0);
+    console.log("Received:", case_sensitive_test_result1.Results.length);
 }
