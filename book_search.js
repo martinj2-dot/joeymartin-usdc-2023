@@ -78,6 +78,33 @@ const twentyLeaguesOut = {
     ]
 }
 
+const positive_test_output1 = {
+    "SearchTerm": "eyes were",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 10
+        }
+    ]
+}
+
+const positive_test_output2 = {
+    "SearchTerm": "and",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 9
+        },
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 10
+        }
+    ]
+}
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -112,4 +139,35 @@ if (test2result.Results.length == 1) {
     console.log("FAIL: Test 2");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
+}
+
+
+
+/**Positive test cases*/
+
+const positive_test_result_1 = findSearchTermInBooks("eyes were", twentyLeaguesIn);
+if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_result_1)) {
+    console.log("PASS: Positive Test 1");
+} else {
+    console.log("FAIL: Positive Test 1");
+    console.log("Expected:", positive_test_output1);
+    console.log("Received:", positive_test_result_1);
+}
+
+const multiple_positive_results = findSearchTermInBooks("and", twentyLeaguesIn); 
+if (multiple_positive_results.Results.length == 2) {
+    console.log("PASS: Positive Test 2");
+} else {
+    console.log("FAIL: Positive Test 2");
+    console.log("Expected:", positive_test_output2.Results.length);
+    console.log("Received:", multiple_positive_results.Results.length);
+}
+
+const multiple_positive_results_2 = findSearchTermInBooks("and", twentyLeaguesIn);
+if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_result_1)) {
+    console.log("PASS: Positive Test 3");
+} else {
+    console.log("FAIL: Positive Test 3");
+    console.log("Expected:", positive_test_output2);
+    console.log("Received:", multiple_positive_results_2);
 }
