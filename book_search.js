@@ -105,6 +105,11 @@ const positive_test_output2 = {
     ]
 }
 
+const negative_test_output = {
+    "SearchTerm": "the quick brown fox jumps over the lazy dog",
+    "Results": []
+}
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -154,6 +159,7 @@ if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_resul
     console.log("Received:", positive_test_result_1);
 }
 
+/**Testing multiple positive results */
 const multiple_positive_results = findSearchTermInBooks("and", twentyLeaguesIn); 
 if (multiple_positive_results.Results.length == 2) {
     console.log("PASS: Positive Test 2");
@@ -164,10 +170,39 @@ if (multiple_positive_results.Results.length == 2) {
 }
 
 const multiple_positive_results_2 = findSearchTermInBooks("and", twentyLeaguesIn);
-if (JSON.stringify(positive_test_output1) === JSON.stringify(positive_test_result_1)) {
+if (JSON.stringify(positive_test_output2) === JSON.stringify(multiple_positive_results_2)) {
     console.log("PASS: Positive Test 3");
 } else {
     console.log("FAIL: Positive Test 3");
     console.log("Expected:", positive_test_output2);
     console.log("Received:", multiple_positive_results_2);
+}
+
+/**Negative test cases*/
+
+const negative_test_result = findSearchTermInBooks(123414213123, twentyLeaguesIn); 
+if (negative_test_result.Results.length == 0) {
+    console.log("PASS: Negative Test 1");
+} else {
+    console.log("FAIL: Negative Test 2");
+    console.log("Expected:", 0);
+    console.log("Received:", negative_test_result.Results.length);
+}
+
+const negative_test_result2 = findSearchTermInBooks("the quick brown fox jumps over the lazy dog", twentyLeaguesIn); 
+if (negative_test_result2.Results.length == 0) {
+    console.log("PASS: Negative Test 2");
+} else {
+    console.log("FAIL: Negative Test 2");
+    console.log("Expected:", 0);
+    console.log("Received:", negative_test_result2.Results.length);
+}
+
+const negative_test_result3 = findSearchTermInBooks("the quick brown fox jumps over the lazy dog", twentyLeaguesIn); 
+if (JSON.stringify(negative_test_output) === JSON.stringify(negative_test_result3)) {
+    console.log("PASS: Negative Test 3");
+} else {
+    console.log("FAIL: Negative Test 3");
+    console.log("Expected:", negative_test_output);
+    console.log("Received:", negative_test_result3);
 }
