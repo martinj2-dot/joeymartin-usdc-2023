@@ -65,51 +65,6 @@ const twentyLeaguesIn = [
         ] 
     }
 ]
-/**Example Multiple Book Input Object */
-const multipleBookIn = [
-    {
-        "Title": "The Catcher in the Rye",
-        "ISBN": "9780316769532",
-        "Content": [
-            {
-                "Page": 15,
-                "Line": 12,
-                "Text": "The quick brown Fox jumps over the lazy dog"
-            },
-            {
-                "Page": 88,
-                "Line": 25,
-                "Text": "May the force be with you"
-            },
-            {
-                "Page": 99,
-                "Line": 13,
-                "Text": "Luke I am your father"
-            }
-        ]
-    },
-    {
-        "Title": "Twenty Thousand Leagues Under the Sea",
-        "ISBN": "9780000528531",
-        "Content": [
-            {
-                "Page": 31,
-                "Line": 8,
-                "Text": "now simply went on by her own momentum.  The dark-"
-            },
-            {
-                "Page": 31,
-                "Line": 9,
-                "Text": "ness was then profound; and however good the Canadian\'s"
-            },
-            {
-                "Page": 31,
-                "Line": 10,
-                "Text": "eyes were, I asked myself how he had managed to see, and"
-            } 
-        ] 
-    }
-]
 
 
 /** Example output object */
@@ -170,27 +125,7 @@ const case_sensitive_test_output = {
 
 /**Multi Scanned object Test outputs */
 
-const multi_book_test_output = {
-    "SearchTerm": "the",
-    "Results": [
-        {
-            "ISBN": "9780316769532",
-            "Page": 15,
-            "Line": 12,
-        },
-        {
-            "ISBN": "9780316769532",
-            "Page": 88,
-            "Line": 25,
-            
-        },
-        {
-            "ISBN": "9780000528531",
-            "Page": 31,
-            "Line": 9
-        }
-    ]
-}
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -313,6 +248,77 @@ if (case_sensitive_test_result2.Results.length == 0) {
 
 /**Multi input tests */
 
+
+/**Test Data */
+
+const multipleBookIn = [
+    {
+        "Title": "The Catcher in the Rye",
+        "ISBN": "9780316769532",
+        "Content": [
+            {
+                "Page": 15,
+                "Line": 12,
+                "Text": "The quick brown Fox jumps over the lazy dog"
+            },
+            {
+                "Page": 88,
+                "Line": 25,
+                "Text": "May the force be with you"
+            },
+            {
+                "Page": 99,
+                "Line": 13,
+                "Text": "Luke I am your father"
+            }
+        ]
+    },
+    {
+        "Title": "Twenty Thousand Leagues Under the Sea",
+        "ISBN": "9780000528531",
+        "Content": [
+            {
+                "Page": 31,
+                "Line": 8,
+                "Text": "now simply went on by her own momentum.  The dark-"
+            },
+            {
+                "Page": 31,
+                "Line": 9,
+                "Text": "ness was then profound; and however good the Canadian\'s"
+            },
+            {
+                "Page": 31,
+                "Line": 10,
+                "Text": "eyes were, I asked myself how he had managed to see, and"
+            } 
+        ] 
+    }
+]
+
+const multi_book_test_output = {
+    "SearchTerm": "the",
+    "Results": [
+        {
+            "ISBN": "9780316769532",
+            "Page": 15,
+            "Line": 12,
+        },
+        {
+            "ISBN": "9780316769532",
+            "Page": 88,
+            "Line": 25,
+            
+        },
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 9
+        }
+    ]
+}
+
+/**Multi input unit tests */
 const multi_book_test_output_result = findSearchTermInBooks("the", multipleBookIn); 
 if (JSON.stringify(multi_book_test_output) === JSON.stringify(multi_book_test_output_result)) {
     console.log("PASS: Multiple input Test 1");
