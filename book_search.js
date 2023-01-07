@@ -29,6 +29,14 @@
     result.SearchTerm = searchTerm
     scannedTextObj.forEach(book => {
         book.Content.forEach(scannedObj =>{
+            if(scannedObj.Text.endsWith("-") && book.Content[book.Content.indexOf(scannedObj) + 1] != -1){
+                let scrubbedSentence = scannedObj.Text.slice(0, -1)
+                subsequentString = book.Content[book.Content.indexOf(scannedObj) + 1].Text
+                concatenatedString = scrubbedSentence.concat(subsequentString)
+            }
+            if(scannedObj.Text.startsWith("-")){
+
+            }
             if(new RegExp('\\b' + searchTerm + '\\b').test(scannedObj.Text)){
                 result.Results.push({
                     "ISBN": book.ISBN,
