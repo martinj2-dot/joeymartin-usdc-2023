@@ -26,8 +26,10 @@
         "SearchTerm": "",
         "Results": []
     };
+
     result.SearchTerm = searchTerm
     scannedTextObj.forEach(book => {
+        if(Object.keys(book).length == 0){return result}
         book.Content.forEach(scannedObj =>{
             if(typeof scannedObj !== 'undefined'){ // Will break not go here if there is a hyphenated multiple word at the end of the scanned text because there is nothing to create
                 /**if the subsequent string ends with a hyphenated character and the next scanned object is the next line and same page as the current line and page */
@@ -46,7 +48,6 @@
                 })
             }
         })
-
     });
     return result; 
 }
@@ -389,7 +390,26 @@ const hyphenated_multi_line_word_test_output_result = findSearchTermInBooks("dar
 if (JSON.stringify(hyphenated_multi_line_word_test_output) === JSON.stringify(hyphenated_multi_line_word_test_output_result)) {
     console.log("PASS: Hyphenated multiple line spanning word input Test 1");
 } else {
-    console.log("FAIL: Hyphenated multiple line spanning wordinput Test 1");
+    console.log("FAIL: Hyphenated multiple line spanning word input Test 1");
     console.log("Expected:", hyphenated_multi_line_word_test_output);
     console.log("Received:", hyphenated_multi_line_word_test_output_result);
+}
+
+/**Null test */
+
+const null_test_in = [{}]
+
+const null_test_output = {
+    "SearchTerm": "",
+    "Results": []
+};
+
+
+const null_test_result = findSearchTermInBooks("", null_test_in); 
+if (JSON.stringify(null_test_output) === JSON.stringify(null_test_result)) {
+    console.log("PASS: Null input Test 1");
+} else {
+    console.log("FAIL: Null input Test 1");
+    console.log("Expected:", null_test_output);
+    console.log("Received:", null_test_result);
 }
