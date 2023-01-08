@@ -29,27 +29,24 @@
     result.SearchTerm = searchTerm
     scannedTextObj.forEach(book => {
         book.Content.forEach(scannedObj =>{
-               let nextPage = book.Content[book.Content.indexOf(scannedObj) + 1].Page
-                let isNextPage = (scannedObj== book.Content[book.Content.indexOf(scannedObj) + 1])
-                if(scannedObj.Text.endsWith("-") && book.Content[book.Content.indexOf(scannedObj) + 1].Line == scannedObj.Line + 1 && (book.Content[book.Content.indexOf(scannedObj) + 1].Page == scannedObj.Page) == true || isNextPage == true ){
+            if(typeof scannedObj !== 'undefined'){ // Will break not go here if there is a hyphenated multiple word at the end of the scanned text because there is nothing to create
+                /**if the subsequent string ends with a hyphenated character and the next scanned object is the next line and same page as the current line and page */
+                if(scannedObj.Text.endsWith("-") && book.Content[book.Content.indexOf(scannedObj) + 1].Line == scannedObj.Line + 1 && (book.Content[book.Content.indexOf(scannedObj) + 1].Page == scannedObj.Page) == true ){ 
                     let scrubbedSentence = scannedObj.Text.slice(0, -1)
                     subsequentString = book.Content[book.Content.indexOf(scannedObj) + 1].Text.split(' ')[0]
-                    
-                    scannedObj.Text = scrubbedSentence.concat(subsequentString)
-                    
+                    scannedObj.Text = scrubbedSentence.concat(subsequentString)              
                     book.Content[book.Content.indexOf(scannedObj) + 1].Text = scrubbedSentence.split(' ').pop() + book.Content[book.Content.indexOf(scannedObj) + 1].Text
-                    console.log(book.Content[book.Content.indexOf(scannedObj) + 1].Text)
-                    console.log(scannedObj.Text)
                 }
-                if(new RegExp('\\b' + searchTerm + '\\b').test(scannedObj.Text)){
-                    result.Results.push({
-                        "ISBN": book.ISBN,
-                        "Page": scannedObj.Page,
-                        "Line": scannedObj.Line
-                    })
-                }
-             
+            }
+            if(new RegExp('\\b' + searchTerm + '\\b').test(scannedObj.Text)){ //checks if the word is in the scanned text, search term is case sensitive and must contain special characters.
+                result.Results.push({
+                    "ISBN": book.ISBN,
+                    "Page": scannedObj.Page,
+                    "Line": scannedObj.Line
+                })
+            }
         })
+
     });
     return result; 
 }
@@ -79,14 +76,7 @@ const twentyLeaguesIn = [
     }
 ]
 
-const nullIn = [
-    {
-        "Title": "",
-        "ISBN": "",
-        "Content":[
-        ]
-    }
-]
+
 /** Example output object */
 const twentyLeaguesOut = {
     "SearchTerm": "the",
@@ -142,23 +132,6 @@ const case_sensitive_test_output = {
     ]
 }
 
-
-/**Hyphenated multiline word tests */
-const multi_line_word_test_output = {
-    "SearchTerm": "darkness",
-    "Results": [
-        {
-            "ISBN": "9780000528531",
-            "Page": 31,
-            "Line": 8
-        },
-        {
-            "ISBN": "9780000528531",
-            "Page": 31,
-            "Line": 9
-        }
-]
-}
 
 
 /*
@@ -295,7 +268,7 @@ const multipleBookIn = [
             {
                 "Page": 15,
                 "Line": 12,
-                "Text": "The quick brown Fox jumps over the lazy dog"
+                "Text": "The quick brown Fox's jumps over the father-in-law's"
             },
             {
                 "Page": 88,
@@ -373,6 +346,50 @@ if (multi_book_test_output_result2.Results.length == 3) {
     console.log("Received:", multi_book_test_output_result2.Results.length);
 }
 
-/**Null Test Cases */
+
+const hyphenated_character_test_output = {
+    "SearchTerm": "father-in-law's",
+    "Results": [
+        {   "ISBN": "9780316769532",
+            "Page": 15,
+            "Line": 12,
+        },
+    ]
+}
+
+
+const hyphenated_character_test_result = findSearchTermInBooks("father-in-law's", multipleBookIn);
+if (JSON.stringify(hyphenated_character_test_output) === JSON.stringify(hyphenated_character_test_result)) {
+    console.log("PASS: Hypenated character input Test 1");
+} else {
+    console.log("FAIL: Hypenated character Test 1");
+    console.log("Expected:", hyphenated_character_test_output);
+    console.log("Received:", hyphenated_character_test_result);
+}
 
 /**Hyphenated word spanning panning multiple lines Edge Case */
+
+const hyphenated_multi_line_word_test_output = {
+    "SearchTerm": "darkness",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 8
+        },
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 9
+        }
+]
+}
+
+const hyphenated_multi_line_word_test_output_result = findSearchTermInBooks("darkness", twentyLeaguesIn); 
+if (JSON.stringify(hyphenated_multi_line_word_test_output) === JSON.stringify(hyphenated_multi_line_word_test_output_result)) {
+    console.log("PASS: Hyphenated multiple line spanning word input Test 1");
+} else {
+    console.log("FAIL: Hyphenated multiple line spanning wordinput Test 1");
+    console.log("Expected:", hyphenated_multi_line_word_test_output);
+    console.log("Received:", hyphenated_multi_line_word_test_output_result);
+}
