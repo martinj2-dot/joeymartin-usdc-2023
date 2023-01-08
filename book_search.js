@@ -29,21 +29,26 @@
     result.SearchTerm = searchTerm
     scannedTextObj.forEach(book => {
         book.Content.forEach(scannedObj =>{
-            if(scannedObj.Text.endsWith("-") && book.Content[book.Content.indexOf(scannedObj) + 1] != -1){
-                let scrubbedSentence = scannedObj.Text.slice(0, -1)
-                subsequentString = book.Content[book.Content.indexOf(scannedObj) + 1].Text
-                concatenatedString = scrubbedSentence.concat(subsequentString)
-            }
-            if(scannedObj.Text.startsWith("-")){
-
-            }
-            if(new RegExp('\\b' + searchTerm + '\\b').test(scannedObj.Text)){
-                result.Results.push({
-                    "ISBN": book.ISBN,
-                    "Page": scannedObj.Page,
-                    "Line": scannedObj.Line
-                })
-            }  
+               let nextPage = book.Content[book.Content.indexOf(scannedObj) + 1].Page
+                let isNextPage = (scannedObj== book.Content[book.Content.indexOf(scannedObj) + 1])
+                if(scannedObj.Text.endsWith("-") && book.Content[book.Content.indexOf(scannedObj) + 1].Line == scannedObj.Line + 1 && (book.Content[book.Content.indexOf(scannedObj) + 1].Page == scannedObj.Page) == true || isNextPage == true ){
+                    let scrubbedSentence = scannedObj.Text.slice(0, -1)
+                    subsequentString = book.Content[book.Content.indexOf(scannedObj) + 1].Text.split(' ')[0]
+                    
+                    scannedObj.Text = scrubbedSentence.concat(subsequentString)
+                    
+                    book.Content[book.Content.indexOf(scannedObj) + 1].Text = scrubbedSentence.split(' ').pop() + book.Content[book.Content.indexOf(scannedObj) + 1].Text
+                    console.log(book.Content[book.Content.indexOf(scannedObj) + 1].Text)
+                    console.log(scannedObj.Text)
+                }
+                if(new RegExp('\\b' + searchTerm + '\\b').test(scannedObj.Text)){
+                    result.Results.push({
+                        "ISBN": book.ISBN,
+                        "Page": scannedObj.Page,
+                        "Line": scannedObj.Line
+                    })
+                }
+             
         })
     });
     return result; 
@@ -74,7 +79,14 @@ const twentyLeaguesIn = [
     }
 ]
 
-
+const nullIn = [
+    {
+        "Title": "",
+        "ISBN": "",
+        "Content":[
+        ]
+    }
+]
 /** Example output object */
 const twentyLeaguesOut = {
     "SearchTerm": "the",
@@ -120,18 +132,33 @@ const negative_test_output = {
 }
 
 const case_sensitive_test_output = {
-    "SearchTerm": "Canadian",
+    "SearchTerm": "Canadian's",
     "Results": [
         {
             "ISBN": "9780000528531",
             "Page": 31,
             "Line": 9
-        },
+        }
     ]
 }
 
 
-/**Multi Scanned object Test outputs */
+/**Hyphenated multiline word tests */
+const multi_line_word_test_output = {
+    "SearchTerm": "darkness",
+    "Results": [
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 8
+        },
+        {
+            "ISBN": "9780000528531",
+            "Page": 31,
+            "Line": 9
+        }
+]
+}
 
 
 /*
@@ -204,6 +231,7 @@ if (JSON.stringify(positive_test_output2) === JSON.stringify(multiple_positive_r
     console.log("Received:", multiple_positive_results_2);
 }
 
+
 /**Negative test cases*/
 
 const negative_test_result = findSearchTermInBooks(123414213123, twentyLeaguesIn); 
@@ -235,7 +263,7 @@ if (JSON.stringify(negative_test_output) === JSON.stringify(negative_test_result
 
 /**Case Sensitive Test cases*/
 
-const case_sensitive_test_result = findSearchTermInBooks("Canadian", twentyLeaguesIn); 
+const case_sensitive_test_result = findSearchTermInBooks("Canadian's", twentyLeaguesIn); 
 if (JSON.stringify(case_sensitive_test_output) === JSON.stringify(case_sensitive_test_result)) {
     console.log("PASS: Case-sensitive Test 1");
 } else {
@@ -244,7 +272,7 @@ if (JSON.stringify(case_sensitive_test_output) === JSON.stringify(case_sensitive
     console.log("Received:", case_sensitive_test_result);
 }
 
-const case_sensitive_test_result2 = findSearchTermInBooks("canadian", twentyLeaguesIn);
+const case_sensitive_test_result2 = findSearchTermInBooks("canadian's", twentyLeaguesIn);
 if (case_sensitive_test_result2.Results.length == 0) {
     console.log("PASS: Case-sensitive Test 2");
 } else {
@@ -344,3 +372,7 @@ if (multi_book_test_output_result2.Results.length == 3) {
     console.log("Expected:", 3);
     console.log("Received:", multi_book_test_output_result2.Results.length);
 }
+
+/**Null Test Cases */
+
+/**Hyphenated word spanning panning multiple lines Edge Case */
