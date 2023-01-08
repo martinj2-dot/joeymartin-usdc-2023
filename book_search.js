@@ -360,9 +360,9 @@ const hyphenated_character_test_output = {
 
 const hyphenated_character_test_result = findSearchTermInBooks("father-in-law's", multipleBookIn);
 if (JSON.stringify(hyphenated_character_test_output) === JSON.stringify(hyphenated_character_test_result)) {
-    console.log("PASS: Hypenated character input Test 1");
+    console.log("PASS: Special character input Test 1");
 } else {
-    console.log("FAIL: Hypenated character Test 1");
+    console.log("FAIL: Special character Test 1");
     console.log("Expected:", hyphenated_character_test_output);
     console.log("Received:", hyphenated_character_test_result);
 }
